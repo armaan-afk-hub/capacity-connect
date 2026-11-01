@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile – CAPACITY CONNECT</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <nav class="navbar navbar-expand-lg bg-white border-bottom py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <div class="brand-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        <span class="fs-5 fw-bold text-navy-primary">CAPACITY <span class="text-teal">CONNECT</span></span>
+      </a>
+      <button onclick="window.history.back()" class="btn btn-sm btn-outline-secondary rounded-3">
+        <i class="bi bi-arrow-left me-1"></i> Back
+      </button>
+    </div>
+  </nav>
+
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-9 col-lg-7">
+        <div class="card-modern p-4 p-sm-5 shadow-sm">
+          <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="brand-icon" style="width: 56px; height: 56px; font-size: 1.75rem;">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold text-navy-primary mb-1" id="profileHeading">Account Profile</h4>
+              <span class="badge bg-teal-light text-dark text-uppercase fw-bold" id="profileRoleBadge">Role</span>
+            </div>
+          </div>
+
+          <div id="profileAlert" class="alert d-none small"></div>
+
+          <form onsubmit="handleProfileSave(event)">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Full Name *</label>
+              <input type="text" id="profileName" class="form-control" required>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <label class="form-label small fw-semibold text-muted text-uppercase">Email (Read Only)</label>
+                <input type="email" id="profileEmail" class="form-control bg-light" disabled>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label small fw-semibold text-muted text-uppercase">Phone</label>
+                <input type="tel" id="profilePhone" class="form-control" placeholder="+91 98765 43210">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">College / Department</label>
+              <input type="text" id="profileOrg" class="form-control" placeholder="Department of Computer Science & Engineering">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Bio / Description</label>
+              <textarea id="profileBio" class="form-control" rows="3" placeholder="Tell other learners about your technical focus..."></textarea>
+            </div>
+
+            <button type="submit" id="btnSaveProfile" class="btn btn-navy px-4 py-2.5 rounded-3 fw-bold">
+              Save Profile Changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="py-3 bg-white border-top text-center text-muted small mt-auto">
+    <div class="container">&copy; CAPACITY CONNECT | Internet & Web Programming Lab Mini-Project</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+
+  <script>
+    let activeProfile = null;
+
+    async function initProfile() {
+      const authData = await checkAuthGuard();
+      if (!authData) return;
+
+      activeProfile = authData.profile;
+      const user = authData.session.user;
+
+      document.getElementById('profileHeading').textContent = activeProfile?.full_name || 'Account Profile';
+      document.getElementById('profileRoleBadge').textContent = activeProfile?.role || 'Student';
+      document.getElementById('profileName').value = activeProfile?.full_name || '';
+      document.getElementById('profileEmail').value = user?.email || '';
+      document.getElementById('profilePhone').value = activeProfile?.phone || '';
+      document.getElementById('profileOrg').value = activeProfile?.organization || '';
+      document.getElementById('profileBio').value = activeProfile?.bio || '';
+    }
+
+    async function handleProfileSave(e) {
+      e.preventDefault();
+      const name = document.getElementById('profileName').value.trim();
+      const phone = document.getElementById('profilePhone').value.trim();
+      const org = document.getElementById('profileOrg').value.trim();
+      const bio = document.getElementById('profileBio').value.trim();
+
+      const btn = document.getElementById('btnSaveProfile');
+      const alertBox = document.getElementById('profileAlert');
+
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      alertBox.className = 'alert d-none small';
+
+      try {
+        const { error } = await window.supabaseClient
+          .from('profiles')
+          .update({
+            full_name: name,
+            phone,
+            organization: org,
+            bio,
+          })
+          .eq('id', activeProfile.id);
+
+        if (error) throw error;
+
+        alertBox.className = 'alert alert-success small d-block';
+        alertBox.textContent = 'Profile updated successfully!';
+      } catch (err) {
+        alertBox.className = 'alert alert-danger small d-block';
+        alertBox.textContent = err.message || 'Failed to update profile.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Changes';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initProfile);
+  </script>
+</body>
+</html>
+

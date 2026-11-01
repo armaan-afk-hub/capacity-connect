@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPACITY CONNECT – Digital Capacity Building & Learning Portal</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <div class="brand-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        <div>
+          <span class="fs-5 fw-bold text-navy-primary">CAPACITY</span>
+          <span class="fs-5 fw-bold text-teal">CONNECT</span>
+          <div class="text-muted text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px; margin-top: -3px;">
+            SIH26075 Portal
+          </div>
+        </div>
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#how-it-works">How It Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+        </ul>
+
+        <!-- Auth buttons / Dynamic User status -->
+        <div id="authNavButtons" class="d-flex align-items-center gap-2">
+          <a href="login.html" class="btn btn-sm btn-outline-secondary px-3 py-1.5 rounded-3 fw-semibold">
+            Sign In
+          </a>
+          <a href="register.html" class="btn btn-sm btn-navy px-3 py-1.5 rounded-3">
+            Register
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section text-center text-lg-start">
+    <div class="container py-4">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-10 text-white mb-3" style="font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.2);">
+            <i class="bi bi-award text-warning"></i>
+            <span>Smart India Hackathon 2026 | ID: SIH26075</span>
+          </div>
+          <h1 class="hero-heading text-white mb-3">
+            Learn Skills. Build Knowledge. <br class="d-none d-lg-block">
+            <span style="color: #2dd4bf;">Shape Your Future.</span>
+          </h1>
+          <p class="hero-subtitle mb-4">
+            A centralized digital capacity building and learning management portal connecting trainees, faculty trainers, and academic knowledge resources.
+          </p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+            <a href="courses.html" class="btn btn-teal px-4 py-2.5 rounded-3 d-flex align-items-center gap-2">
+              <span>Explore Courses</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="register.html" class="btn btn-outline-light px-4 py-2.5 rounded-3">
+              Get Started
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="p-4 rounded-4 bg-white bg-opacity-10 backdrop-blur border border-white border-opacity-20 text-white shadow-lg">
+            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2 text-white">
+              <i class="bi bi-shield-check text-teal"></i>
+              <span>Academic IWP Mini-Project</span>
+            </h5>
+            <p class="small text-light opacity-75 mb-3 leading-relaxed">
+              Designed for college Internet & Web Programming evaluation featuring real Supabase PostgreSQL connectivity, role-based access control, file storage, and assessment scoring.
+            </p>
+            <div class="d-flex flex-column gap-2 small">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-teal"></i>
+                <span>HTML5, CSS3, Vanilla JS & Bootstrap 5</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-teal"></i>
+                <span>Supabase Auth, Database & Storage</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-teal"></i>
+                <span>Trainee, Trainer & Admin Dashboards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Platform Statistics (Real Database Values) -->
+  <section class="py-5" style="margin-top: -3rem; position: relative; z-index: 10;">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-6 col-lg-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+              <i class="bi bi-journal-bookmark-fill"></i>
+            </div>
+            <div>
+              <h3 class="fw-bold mb-0 text-navy-primary" id="statCourses">0</h3>
+              <span class="text-muted small">Approved Courses</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-success bg-opacity-10 text-success">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+              <h3 class="fw-bold mb-0 text-navy-primary" id="statStudents">0</h3>
+              <span class="text-muted small">Registered Trainees</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-info bg-opacity-10 text-info">
+              <i class="bi bi-person-video3"></i>
+            </div>
+            <div>
+              <h3 class="fw-bold mb-0 text-navy-primary" id="statTrainers">0</h3>
+              <span class="text-muted small">Active Trainers</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div>
+              <h3 class="fw-bold mb-0 text-navy-primary" id="statEnrollments">0</h3>
+              <span class="text-muted small">Total Enrollments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Courses Section -->
+  <section class="py-5">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between mb-4 gap-2">
+        <div>
+          <span class="text-uppercase fw-bold text-teal" style="font-size: 0.8rem; letter-spacing: 0.5px;">Accredited Programs</span>
+          <h2 class="fw-bold text-navy-primary mb-1">Featured Capacity Building Courses</h2>
+          <p class="text-muted small mb-0">High-impact technical courses curated to develop practical competency.</p>
+        </div>
+        <a href="courses.html" class="btn btn-sm btn-outline-secondary px-3 py-2 rounded-3 align-self-start align-self-md-auto">
+          View All Courses <i class="bi bi-chevron-right ms-1"></i>
+        </a>
+      </div>
+
+      <!-- Course Cards Container -->
+      <div class="row g-4" id="featuredCoursesContainer">
+        <!-- Rendered dynamically by JavaScript from Supabase -->
+        <div class="col-12 text-center py-5">
+          <div class="spinner-border text-teal" role="status">
+            <span class="visually-hidden">Loading courses...</span>
+          </div>
+          <p class="text-muted small mt-2">Loading courses from database...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="py-5 bg-white border-top border-bottom" id="how-it-works">
+    <div class="container py-4">
+      <div class="text-center max-w-2xl mx-auto mb-5">
+        <span class="text-uppercase fw-bold text-teal" style="font-size: 0.8rem; letter-spacing: 0.5px;">Workflow Overview</span>
+        <h2 class="fw-bold text-navy-primary">How CAPACITY CONNECT Works</h2>
+        <p class="text-muted small">A unified, multi-role structure designed for college technical capacity enhancement.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Student Workflow -->
+        <div class="col-md-4">
+          <div class="card-modern p-4 h-100">
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary mb-3">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <h5 class="fw-bold text-navy-primary mb-2">1. Trainees & Students</h5>
+            <p class="text-muted small mb-3">
+              Register an account, browse accredited courses, enroll in one click, download study materials, and complete quizzes.
+            </p>
+            <ul class="list-unstyled small text-muted d-flex flex-column gap-2 mb-0 border-top pt-3">
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> One-click enrollment
+              </li>
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Access PDF lecture notes
+              </li>
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Automated MCQ evaluations
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Trainer Workflow -->
+        <div class="col-md-4">
+          <div class="card-modern p-4 h-100">
+            <div class="stat-icon bg-info bg-opacity-10 text-info mb-3">
+              <i class="bi bi-person-badge-fill"></i>
+            </div>
+            <h5 class="fw-bold text-navy-primary mb-2">2. Faculty Trainers</h5>
+            <p class="text-muted small mb-3">
+              Create curriculum topics, upload PDF resources to Supabase Storage, create multiple-choice quizzes, and monitor students.
+            </p>
+            <ul class="list-unstyled small text-muted d-flex flex-column gap-2 mb-0 border-top pt-3">
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Design courses & objectives
+              </li>
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Upload learning documents
+              </li>
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Track student test scores
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Admin Workflow -->
+        <div class="col-md-4">
+          <div class="card-modern p-4 h-100">
+            <div class="stat-icon bg-dark bg-opacity-10 text-dark mb-3">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <h5 class="fw-bold text-navy-primary mb-2">3. Administrators</h5>
+            <p class="text-muted small mb-3">
+              Maintain academic quality, review and approve or reject proposed courses, broadcast notices, and inspect platform reports.
+            </p>
+            <ul class="list-unstyled small text-muted d-flex flex-column gap-2 mb-0 border-top pt-3">
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Course verification & approval
+              </li>
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> User directory governance
+              </li>
+              <li class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2 text-teal"></i> Institutional announcements
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About & Project Details Section -->
+  <section class="py-5" id="about">
+    <div class="container py-4">
+      <div class="card-modern p-4 p-lg-5 bg-navy-primary text-white border-0 shadow-lg">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-8">
+            <span class="badge bg-teal-light text-dark fw-bold mb-2">College Mini-Project Demonstration</span>
+            <h2 class="fw-bold mb-3">About CAPACITY CONNECT</h2>
+            <p class="text-light opacity-75 small leading-relaxed mb-3">
+              CAPACITY CONNECT is developed for the <strong>Internet & Web Programming Lab</strong> based on the Smart India Hackathon (SIH 2026) Problem Statement <strong>SIH26075</strong>.
+            </p>
+            <p class="text-light opacity-75 small leading-relaxed mb-4">
+              It proves end-to-end full-stack capabilities with real PostgreSQL database tables, Supabase Auth session management, Supabase Storage for PDF resources, and strict Row Level Security (RLS) policies.
+            </p>
+            <div class="d-flex flex-wrap gap-4 small text-light opacity-75">
+              <div><strong class="text-white d-block">Tech Stack:</strong> HTML5, CSS3, JS, Bootstrap 5</div>
+              <div><strong class="text-white d-block">Backend:</strong> Supabase PostgreSQL & Auth</div>
+              <div><strong class="text-white d-block">Storage:</strong> Supabase Buckets (PDFs)</div>
+            </div>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a href="register.html" class="btn btn-teal px-4 py-3 rounded-3 fw-bold">
+              Join the Platform Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact & Footer -->
+  <footer class="pt-5 pb-4 mt-auto" id="contact">
+    <div class="container">
+      <div class="row g-4 pb-4 border-bottom border-secondary border-opacity-25">
+        <div class="col-lg-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="brand-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <span class="fs-5 fw-bold text-white">CAPACITY CONNECT</span>
+          </div>
+          <p class="small text-muted mb-3">
+            A centralized digital capacity building and learning management portal connecting trainees, trainers, and knowledge resources.
+          </p>
+          <div class="badge bg-dark border border-secondary text-light px-3 py-2">
+            <i class="bi bi-code-slash text-teal me-1"></i> SIH26075 | IWP Lab Project
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2 offset-lg-1">
+          <h6 class="text-white fw-bold mb-3 small text-uppercase">Navigation</h6>
+          <ul class="list-unstyled small d-flex flex-column gap-2 mb-0">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="courses.html">Courses Catalog</a></li>
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Student Register</a></li>
+            <li><a href="register.html?role=trainer">Trainer Register</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h6 class="text-white fw-bold mb-3 small text-uppercase">Lab Concepts</h6>
+          <ul class="list-unstyled small d-flex flex-column gap-2 text-muted mb-0">
+            <li>Bootstrap 5 Responsive UI</li>
+            <li>Supabase Auth & Sessions</li>
+            <li>PostgreSQL CRUD Operations</li>
+            <li>Row Level Security (RLS)</li>
+            <li>PDF File Uploads</li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3">
+          <h6 class="text-white fw-bold mb-3 small text-uppercase">Contact Support</h6>
+          <ul class="list-unstyled small d-flex flex-column gap-2 text-muted mb-0">
+            <li><i class="bi bi-envelope me-2 text-teal"></i> support@capacityconnect.portal</li>
+            <li><i class="bi bi-telephone me-2 text-teal"></i> +91 (0) 80 2345 6789</li>
+            <li><i class="bi bi-geo-alt me-2 text-teal"></i> Dept. of Computer Science & Engineering</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center pt-3 small text-muted">
+        <div>&copy; <span id="currentYear"></span> CAPACITY CONNECT. All rights reserved.</div>
+        <div class="mt-2 mt-sm-0">Internet & Web Programming Lab Mini-Project</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Supabase JS Client via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Config and Common Script -->
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+
+  <!-- Page Specific Logic -->
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    async function loadLandingData() {
+      // 1. Fetch Real Statistics from Supabase
+      if (window.supabaseClient) {
+        try {
+          // Total Courses
+          const { count: courseCount } = await window.supabaseClient
+            .from('courses')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'approved');
+          document.getElementById('statCourses').textContent = courseCount || 0;
+
+          // Students count
+          const { count: studentCount } = await window.supabaseClient
+            .from('profiles')
+            .select('*', { count: 'exact', head: true })
+            .eq('role', 'student');
+          document.getElementById('statStudents').textContent = studentCount || 0;
+
+          // Trainers count
+          const { count: trainerCount } = await window.supabaseClient
+            .from('profiles')
+            .select('*', { count: 'exact', head: true })
+            .eq('role', 'trainer');
+          document.getElementById('statTrainers').textContent = trainerCount || 0;
+
+          // Enrollments count
+          const { count: enrollmentCount } = await window.supabaseClient
+            .from('enrollments')
+            .select('*', { count: 'exact', head: true });
+          document.getElementById('statEnrollments').textContent = enrollmentCount || 0;
+
+          // 2. Fetch Featured Courses
+          const { data: courses, error } = await window.supabaseClient
+            .from('courses')
+            .select(`*, trainer:profiles!courses_trainer_id_fkey(full_name)`)
+            .eq('status', 'approved')
+            .limit(3);
+
+          const container = document.getElementById('featuredCoursesContainer');
+
+          if (error || !courses || courses.length === 0) {
+            container.innerHTML = `
+              <div class="col-12">
+                <div class="card-modern p-5 text-center">
+                  <i class="bi bi-journal-x fs-1 text-muted mb-2"></i>
+                  <h5 class="fw-bold text-navy-primary">No Approved Courses Available Yet</h5>
+                  <p class="text-muted small mb-3">Courses created by instructors will appear here once approved by an administrator.</p>
+                  <a href="register.html?role=trainer" class="btn btn-sm btn-teal px-3 py-2 rounded-3">Register as Trainer to Publish</a>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = courses.map(course => `
+              <div class="col-md-4">
+                <div class="card-modern h-100 overflow-hidden d-flex flex-column">
+                  <div style="height: 180px; background: #e2e8f0; position: relative;">
+                    ${course.thumbnail_url 
+                      ? `<img src="${course.thumbnail_url}" alt="${course.title}" class="w-100 h-100 object-fit-cover">`
+                      : `<div class="w-100 h-100 bg-navy-primary d-flex align-items-center justify-content-center text-teal fs-1"><i class="bi bi-book"></i></div>`}
+                    <span class="badge bg-white text-dark shadow-sm position-absolute top-0 start-0 m-3 px-2.5 py-1.5 fw-semibold" style="font-size: 0.75rem;">
+                      ${course.category}
+                    </span>
+                  </div>
+                  <div class="p-4 d-flex flex-column flex-grow-1">
+                    <h5 class="fw-bold text-navy-primary mb-2 line-clamp-1">${course.title}</h5>
+                    <p class="text-muted small mb-3 line-clamp-2">${course.description || 'Comprehensive curriculum with practice materials.'}</p>
+                    <div class="mt-auto pt-3 border-top d-flex align-items-center justify-content-between small text-muted">
+                      <span><i class="bi bi-person me-1"></i>${course.trainer?.full_name || 'Faculty Member'}</span>
+                      <span><i class="bi bi-clock me-1"></i>${course.duration || '4 Weeks'}</span>
+                    </div>
+                    <a href="course-details.html?id=${course.id}" class="btn btn-sm btn-navy mt-3 w-100 py-2 rounded-3">
+                      View Details & Enroll
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+          }
+        } catch (err) {
+          console.warn('Error fetching live data:', err);
+          document.getElementById('featuredCoursesContainer').innerHTML = `
+            <div class="col-12 text-center py-4">
+              <div class="alert alert-info d-inline-block small">
+                Database initialized! Please run the <code>supabase/schema.sql</code> script in your Supabase SQL editor to create the tables.
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadLandingData);
+  </script>
+</body>
+</html>

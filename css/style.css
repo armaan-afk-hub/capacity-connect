@@ -1,0 +1,187 @@
+/* ==============================================================================
+   CAPACITY CONNECT - Custom CSS
+   SIH26075 - Digital Capacity Building and Learning Management Portal
+   Color Palette: Deep Navy Blue (#0f2942), Teal Accent (#0d9488), Soft Whites (#f8fafc)
+   ============================================================================== */
+
+:root {
+  --navy-primary: #0f2942;
+  --navy-dark: #0a1b2d;
+  --navy-light: #183d61;
+  --teal-accent: #0d9488;
+  --teal-hover: #0f766e;
+  --teal-light: #ccfbf1;
+  --bg-soft: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --card-border: #e2e8f0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-soft);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Navbar */
+.navbar-brand {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--navy-primary) !important;
+}
+
+.brand-icon {
+  background: var(--navy-primary);
+  color: #2dd4bf;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.nav-link {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #475569 !important;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--teal-accent) !important;
+}
+
+/* Custom Buttons */
+.btn-navy {
+  background-color: var(--navy-primary);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-navy:hover, .btn-navy:focus {
+  background-color: var(--navy-light);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 41, 66, 0.15);
+}
+
+.btn-teal {
+  background-color: var(--teal-accent);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-teal:hover, .btn-teal:focus {
+  background-color: var(--teal-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-dark) 100%);
+  color: #ffffff;
+  padding: 5rem 0 6rem;
+  position: relative;
+}
+
+.hero-heading {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  color: #cbd5e1;
+  font-size: 1.15rem;
+  max-width: 620px;
+}
+
+/* Cards & Badges */
+.card-modern {
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  background: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card {
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+/* Sidebar for Dashboards */
+.dashboard-sidebar {
+  background: var(--navy-dark);
+  min-height: 100vh;
+  color: #cbd5e1;
+}
+
+.sidebar-link {
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sidebar-link.active {
+  background: var(--teal-accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  background: var(--navy-dark);
+  color: #94a3b8;
+}
+
+footer a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer a:hover {
+  color: #2dd4bf;
+}
+

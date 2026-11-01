@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console – CAPACITY CONNECT</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <div class="d-flex min-vh-100">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar d-flex flex-column p-3 d-none d-lg-flex" style="width: 260px;">
+      <a href="index.html" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-4 px-2">
+        <div class="brand-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        <span class="fs-5 fw-bold text-white">CAPACITY <span class="text-teal">CONNECT</span></span>
+      </a>
+
+      <div class="p-3 bg-white bg-opacity-10 rounded-3 mb-4 text-white">
+        <div class="small fw-semibold text-truncate" id="sidebarAdminName">Administrator</div>
+        <div class="badge bg-danger text-white fw-bold text-uppercase mt-1" style="font-size: 0.65rem;">System Admin</div>
+      </div>
+
+      <nav class="nav flex-column gap-1 flex-grow-1">
+        <a href="#overview" class="sidebar-link active" onclick="switchAdminTab('overview', this)">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a href="#approvals" class="sidebar-link" onclick="switchAdminTab('approvals', this)">
+          <i class="bi bi-check2-square"></i> Course Approvals
+          <span class="badge bg-warning text-dark ms-auto" id="navBadgePending">0</span>
+        </a>
+        <a href="#students" class="sidebar-link" onclick="switchAdminTab('students', this)">
+          <i class="bi bi-people"></i> Manage Students
+        </a>
+        <a href="#trainers" class="sidebar-link" onclick="switchAdminTab('trainers', this)">
+          <i class="bi bi-person-badge"></i> Manage Trainers
+        </a>
+        <a href="#courses" class="sidebar-link" onclick="switchAdminTab('courses', this)">
+          <i class="bi bi-journal-album"></i> Master Courses
+        </a>
+        <a href="#announcements" class="sidebar-link" onclick="switchAdminTab('announcements', this)">
+          <i class="bi bi-megaphone"></i> Announcements
+        </a>
+        <a href="profile.html" class="sidebar-link">
+          <i class="bi bi-person-gear"></i> Admin Profile
+        </a>
+      </nav>
+
+      <div class="pt-3 border-top border-secondary border-opacity-25">
+        <button onclick="logoutUser()" class="btn btn-sm btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2 rounded-3">
+          <i class="bi bi-box-arrow-right"></i> Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Offcanvas Sidebar -->
+    <div class="offcanvas offcanvas-start bg-navy-dark text-white" tabindex="-1" id="mobileAdminSidebar">
+      <div class="offcanvas-header border-bottom border-secondary border-opacity-25">
+        <h5 class="offcanvas-title text-white fw-bold">CAPACITY CONNECT</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body d-flex flex-column p-3">
+        <nav class="nav flex-column gap-1 flex-grow-1">
+          <a href="#overview" class="sidebar-link active" data-bs-dismiss="offcanvas" onclick="switchAdminTab('overview')">
+            <i class="bi bi-speedometer2"></i> Dashboard
+          </a>
+          <a href="#approvals" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchAdminTab('approvals')">
+            <i class="bi bi-check2-square"></i> Course Approvals
+          </a>
+          <a href="#students" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchAdminTab('students')">
+            <i class="bi bi-people"></i> Manage Students
+          </a>
+          <a href="#trainers" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchAdminTab('trainers')">
+            <i class="bi bi-person-badge"></i> Manage Trainers
+          </a>
+          <a href="#courses" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchAdminTab('courses')">
+            <i class="bi bi-journal-album"></i> Master Courses
+          </a>
+          <a href="#announcements" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchAdminTab('announcements')">
+            <i class="bi bi-megaphone"></i> Announcements
+          </a>
+          <a href="profile.html" class="sidebar-link">
+            <i class="bi bi-person-gear"></i> Admin Profile
+          </a>
+        </nav>
+        <button onclick="logoutUser()" class="btn btn-sm btn-outline-danger w-100 mt-auto rounded-3">
+          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-grow-1 d-flex flex-column">
+      <header class="bg-white border-bottom p-3 px-4 d-flex justify-content-between align-items-center sticky-top">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileAdminSidebar">
+            <i class="bi bi-list"></i>
+          </button>
+          <h5 class="fw-bold text-navy-primary mb-0" id="adminHeading">Administrator Governance Portal</h5>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm btn-teal rounded-3" data-bs-toggle="modal" data-bs-target="#announcementModal">
+            <i class="bi bi-megaphone me-1"></i> Post Announcement
+          </button>
+        </div>
+      </header>
+
+      <main class="p-4 p-lg-5 flex-grow-1">
+        <!-- TAB 1: OVERVIEW -->
+        <div id="admin-tab-overview" class="admin-tab">
+          <!-- 4 Stats Cards -->
+          <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Total Students</span>
+                  <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-people-fill"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardAdminStudents">0</h3>
+                <span class="text-muted small">Registered learners</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Total Trainers</span>
+                  <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-person-video3"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardAdminTrainers">0</h3>
+                <span class="text-muted small">Faculty accounts</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Total Courses</span>
+                  <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-journal-code"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardAdminCourses">0</h3>
+                <span class="text-muted small" id="cardAdminCoursesSubtitle">0 Approved</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Total Enrollments</span>
+                  <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-mortarboard-fill"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardAdminEnrollments">0</h3>
+                <span class="text-muted small">Course admissions</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Platform Activity Chart (Chart.js) -->
+          <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+              <div class="card-modern p-4 h-100">
+                <h6 class="fw-bold text-navy-primary mb-3">Platform Activity & Enrollment Distribution</h6>
+                <div style="height: 280px;">
+                  <canvas id="platformActivityChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="card-modern p-4 h-100 d-flex flex-column">
+                <h6 class="fw-bold text-navy-primary mb-3">Pending Approvals Quick View</h6>
+                <div id="quickPendingList" class="flex-grow-1 overflow-auto d-flex flex-column gap-2">
+                  <p class="text-muted small">Loading queue...</p>
+                </div>
+                <button onclick="switchAdminTab('approvals')" class="btn btn-sm btn-outline-secondary w-100 mt-3 rounded-3">
+                  Go to Approvals Queue
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: APPROVALS -->
+        <div id="admin-tab-approvals" class="admin-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Pending Course Proposals</h5>
+            <div id="approvalsListContainer" class="d-flex flex-column gap-3">
+              <p class="text-muted small">Loading pending courses...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: STUDENTS -->
+        <div id="admin-tab-students" class="admin-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Registered Trainees & Students</h5>
+            <div class="table-responsive">
+              <table class="table align-middle table-hover small">
+                <thead class="table-light">
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Email Address</th>
+                    <th>Registration Date</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminStudentsTable">
+                  <tr><td colspan="5" class="text-center py-4 text-muted">Loading students...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: TRAINERS -->
+        <div id="admin-tab-trainers" class="admin-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Registered Instructors & Trainers</h5>
+            <div class="table-responsive">
+              <table class="table align-middle table-hover small">
+                <thead class="table-light">
+                  <tr>
+                    <th>Trainer Name</th>
+                    <th>Email Address</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTrainersTable">
+                  <tr><td colspan="5" class="text-center py-4 text-muted">Loading faculty...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: COURSES -->
+        <div id="admin-tab-courses" class="admin-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Master Course Catalog</h5>
+            <div class="table-responsive">
+              <table class="table align-middle table-hover small">
+                <thead class="table-light">
+                  <tr>
+                    <th>Title</th>
+                    <th>Trainer</th>
+                    <th>Category</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminCoursesTable">
+                  <tr><td colspan="6" class="text-center py-4 text-muted">Loading courses...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: ANNOUNCEMENTS -->
+        <div id="admin-tab-announcements" class="admin-tab d-none">
+          <div class="card-modern p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-navy-primary mb-0">Platform Announcements</h5>
+              <button class="btn btn-sm btn-navy rounded-3" data-bs-toggle="modal" data-bs-target="#announcementModal">
+                <i class="bi bi-plus-circle me-1"></i> New Notice
+              </button>
+            </div>
+            <div id="adminAnnouncementsContainer" class="d-flex flex-column gap-3">
+              <p class="text-muted small">Loading bulletins...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Announcement Modal -->
+  <div class="modal fade" id="announcementModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header bg-navy-primary text-white">
+          <h5 class="modal-title fw-bold text-white">Post Institutional Notice</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form onsubmit="handlePostAnnouncement(event)">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Notice Title *</label>
+              <input type="text" id="annTitleInput" class="form-control" placeholder="e.g. Schedule for Mid-Term Assessments" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Message Details *</label>
+              <textarea id="annMessageInput" class="form-control" rows="4" placeholder="Enter full announcement details..." required></textarea>
+            </div>
+          </div>
+          <div class="modal-footer border-top">
+            <button type="button" class="btn btn-sm btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" id="btnSubmitAnn" class="btn btn-sm btn-navy px-4 py-2 rounded-3 fw-bold">Broadcast Notice</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+
+  <script>
+    let activeAdmin = null;
+
+    function switchAdminTab(tabId, el) {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('d-none'));
+      const target = document.getElementById(`admin-tab-${tabId}`);
+      if (target) target.classList.remove('d-none');
+
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const titles = {
+        'overview': 'Administrator Governance Portal',
+        'approvals': 'Course Approvals Queue',
+        'students': 'Manage Registered Students',
+        'trainers': 'Manage Faculty Instructors',
+        'courses': 'Master Course Catalog',
+        'announcements': 'Institutional Announcements'
+      };
+      document.getElementById('adminHeading').textContent = titles[tabId] || 'Admin Console';
+    }
+
+    async function initAdminDashboard() {
+      const authData = await checkAuthGuard(['admin']);
+      if (!authData) return;
+
+      activeAdmin = authData.session.user;
+      document.getElementById('sidebarAdminName').textContent = authData.profile?.full_name || 'Administrator';
+
+      // Load Statistics
+      const stats = await getAdminPlatformStats();
+      if (stats) {
+        document.getElementById('cardAdminStudents').textContent = stats.totalStudents;
+        document.getElementById('cardAdminTrainers').textContent = stats.totalTrainers;
+        document.getElementById('cardAdminCourses').textContent = stats.totalCourses;
+        document.getElementById('cardAdminCoursesSubtitle').textContent = `${stats.approvedCourses} Approved`;
+        document.getElementById('cardAdminEnrollments').textContent = stats.totalEnrollments;
+        document.getElementById('navBadgePending').textContent = stats.pendingCourses;
+
+        // Render Chart.js
+        renderChart(stats);
+      }
+
+      // Load Approvals
+      const pending = await getPendingCourses();
+      renderApprovals(pending);
+
+      // Load Students
+      const students = await getUsersByRole('student');
+      renderStudents(students);
+
+      // Load Trainers
+      const trainers = await getUsersByRole('trainer');
+      renderTrainers(trainers);
+
+      // Load Master Courses
+      const courses = await getAllCoursesAdmin();
+      renderCourses(courses);
+
+      // Load Announcements
+      loadAnnouncements();
+    }
+
+    function renderChart(stats) {
+      const ctx = document.getElementById('platformActivityChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Students', 'Trainers', 'Courses', 'Enrollments', 'Quizzes'],
+          datasets: [{
+            label: 'Total Platform Entities',
+            data: [
+              stats.totalStudents,
+              stats.totalTrainers,
+              stats.totalCourses,
+              stats.totalEnrollments,
+              stats.totalQuizzes
+            ],
+            backgroundColor: ['#0f2942', '#0d9488', '#3880b5', '#f59e0b', '#10b981'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+      });
+    }
+
+    function renderApprovals(list) {
+      const container = document.getElementById('approvalsListContainer');
+      const quickContainer = document.getElementById('quickPendingList');
+
+      if (!list || list.length === 0) {
+        container.innerHTML = `<div class="p-4 bg-light rounded-3 text-center text-muted small">No courses pending approval right now.</div>`;
+        quickContainer.innerHTML = `<p class="text-muted small mb-0">All course approvals clear!</p>`;
+        return;
+      }
+
+      quickContainer.innerHTML = list.slice(0, 3).map(c => `
+        <div class="p-2 border rounded-3 bg-light small">
+          <div class="fw-bold text-navy-primary line-clamp-1">${c.title}</div>
+          <div class="text-muted" style="font-size: 0.72rem;">By: ${c.trainer?.full_name || 'Faculty'}</div>
+        </div>
+      `).join('');
+
+      container.innerHTML = list.map(c => `
+        <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <span class="badge bg-teal-light text-dark mb-1">${c.category}</span>
+            <h6 class="fw-bold text-navy-primary mb-1">${c.title}</h6>
+            <p class="small text-muted mb-1">${c.description}</p>
+            <div class="small text-muted">Trainer: <strong>${c.trainer?.full_name || 'Faculty'}</strong> • Submitted: ${new Date(c.created_at).toLocaleDateString()}</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button onclick="handleApproveCourse('${c.id}')" class="btn btn-sm btn-success px-3 rounded-3">Approve</button>
+            <button onclick="handleRejectCourse('${c.id}')" class="btn btn-sm btn-outline-danger px-3 rounded-3">Reject</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStudents(list) {
+      const tbody = document.getElementById('adminStudentsTable');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No students registered yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(s => `
+        <tr>
+          <td class="fw-bold text-navy-primary">${s.full_name || 'Trainee'}</td>
+          <td>${s.email}</td>
+          <td class="text-muted">${new Date(s.created_at).toLocaleDateString()}</td>
+          <td><span class="badge ${s.is_active !== false ? 'bg-success' : 'bg-danger'}">${s.is_active !== false ? 'Active' : 'Suspended'}</span></td>
+          <td class="text-end">
+            <button onclick="handleToggleStatus('${s.id}', ${s.is_active !== false ? 'false' : 'true'})" class="btn btn-sm ${s.is_active !== false ? 'btn-outline-danger' : 'btn-outline-success'} rounded-2 px-2 py-1">
+              ${s.is_active !== false ? 'Deactivate' : 'Activate'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderTrainers(list) {
+      const tbody = document.getElementById('adminTrainersTable');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No trainers registered yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(t => `
+        <tr>
+          <td class="fw-bold text-navy-primary">${t.full_name || 'Faculty'}</td>
+          <td>${t.email}</td>
+          <td>${t.organization || 'Computer Science & Engineering'}</td>
+          <td><span class="badge ${t.is_active !== false ? 'bg-success' : 'bg-danger'}">${t.is_active !== false ? 'Active' : 'Suspended'}</span></td>
+          <td class="text-end">
+            <button onclick="handleToggleStatus('${t.id}', ${t.is_active !== false ? 'false' : 'true'})" class="btn btn-sm ${t.is_active !== false ? 'btn-outline-danger' : 'btn-outline-success'} rounded-2 px-2 py-1">
+              ${t.is_active !== false ? 'Deactivate' : 'Activate'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderCourses(list) {
+      const tbody = document.getElementById('adminCoursesTable');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No courses registered yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(c => `
+        <tr>
+          <td class="fw-bold text-navy-primary">${c.title}</td>
+          <td>${c.trainer?.full_name || 'Faculty'}</td>
+          <td>${c.category}</td>
+          <td>${c.duration}</td>
+          <td>
+            <span class="badge ${c.status === 'approved' ? 'bg-success' : c.status === 'rejected' ? 'bg-danger' : 'bg-warning text-dark'} text-uppercase">
+              ${c.status}
+            </span>
+          </td>
+          <td class="text-end">
+            <a href="course-details.html?id=${c.id}" target="_blank" class="btn btn-sm btn-light border p-1 px-2 rounded-2 me-1"><i class="bi bi-box-arrow-up-right"></i></a>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadAnnouncements() {
+      const list = await getAnnouncements();
+      const container = document.getElementById('adminAnnouncementsContainer');
+      if (!list || list.length === 0) {
+        container.innerHTML = `<p class="text-muted small">No announcements posted yet.</p>`;
+        return;
+      }
+
+      container.innerHTML = list.map(a => `
+        <div class="p-3 bg-light rounded-3 border d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <h6 class="fw-bold text-navy-primary mb-0">${a.title}</h6>
+              <span class="badge bg-secondary opacity-75 small">${new Date(a.created_at).toLocaleDateString()}</span>
+            </div>
+            <p class="small text-muted mb-0">${a.message}</p>
+          </div>
+          <button onclick="handleDeleteAnn('${a.id}')" class="btn btn-sm btn-outline-danger p-1 px-2 rounded-2" title="Delete"><i class="bi bi-trash"></i></button>
+        </div>
+      `).join('');
+    }
+
+    async function handleApproveCourse(id) {
+      try {
+        await approveCourse(id);
+        showToast('Course approved and published!', 'success');
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        showToast(err.message || 'Approval failed.', 'danger');
+      }
+    }
+
+    async function handleRejectCourse(id) {
+      try {
+        await rejectCourse(id);
+        showToast('Course rejected.', 'info');
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        showToast(err.message || 'Rejection failed.', 'danger');
+      }
+    }
+
+    async function handleToggleStatus(userId, newStatus) {
+      try {
+        await toggleUserStatus(userId, newStatus);
+        showToast(`Account status updated to ${newStatus ? 'Active' : 'Suspended'}!`, 'success');
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        showToast(err.message || 'Failed to update user status.', 'danger');
+      }
+    }
+
+    async function handlePostAnnouncement(e) {
+      e.preventDefault();
+      const title = document.getElementById('annTitleInput').value.trim();
+      const message = document.getElementById('annMessageInput').value.trim();
+
+      const btn = document.getElementById('btnSubmitAnn');
+      btn.disabled = true;
+      btn.textContent = 'Posting...';
+
+      try {
+        await postAnnouncement(title, message, activeAdmin.id);
+        showToast('Announcement posted!', 'success');
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        showToast(err.message || 'Failed to post announcement.', 'danger');
+        btn.disabled = false;
+        btn.textContent = 'Broadcast Notice';
+      }
+    }
+
+    async function handleDeleteAnn(id) {
+      if (!confirm('Are you sure you want to delete this notice?')) return;
+      try {
+        await deleteAnnouncement(id);
+        showToast('Announcement deleted.', 'success');
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        showToast(err.message || 'Failed to delete notice.', 'danger');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initAdminDashboard);
+  </script>
+</body>
+</html>
+

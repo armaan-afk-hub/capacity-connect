@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Courses – CAPACITY CONNECT</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <div class="brand-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        <span class="fs-5 fw-bold text-navy-primary">CAPACITY <span class="text-teal">CONNECT</span></span>
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="courses.html">Courses</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+
+        <div id="authNavButtons" class="d-flex align-items-center gap-2">
+          <a href="login.html" class="btn btn-sm btn-outline-secondary px-3 py-1.5 rounded-3 fw-semibold">Sign In</a>
+          <a href="register.html" class="btn btn-sm btn-navy px-3 py-1.5 rounded-3">Register</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="bg-navy-primary text-white py-5">
+    <div class="container text-center text-md-start">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <span class="badge bg-teal-light text-dark fw-bold mb-2">Technical Curricula</span>
+          <h1 class="fw-bold mb-2 text-white">Digital Capacity Building Courses</h1>
+          <p class="text-light opacity-75 mb-0 small">
+            Discover accredited programs designed to bridge technical skill gaps in internet and web programming.
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Search Controls -->
+  <main class="container my-5">
+    <div class="card-modern p-4 mb-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-5">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Search courses or keywords..." oninput="handleFilterChange()">
+          </div>
+        </div>
+
+        <div class="col-md-7">
+          <div class="d-flex gap-2 overflow-x-auto pb-1" id="categoryPills">
+            <button class="btn btn-sm btn-navy rounded-pill px-3 active" onclick="setCategory('all', this)">All</button>
+            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setCategory('Web Development', this)">Web Dev</button>
+            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setCategory('Cloud Computing', this)">Cloud</button>
+            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setCategory('Cybersecurity', this)">Cybersecurity</button>
+            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setCategory('Data Science', this)">Data Science</button>
+            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="setCategory('Programming', this)">Programming</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="row g-4" id="coursesGrid">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-teal" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-muted small mt-2">Loading approved courses...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 bg-navy-dark text-muted border-top text-center small mt-auto">
+    <div class="container">&copy; CAPACITY CONNECT | Internet & Web Programming Lab Mini-Project</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/courses.js"></script>
+
+  <script>
+    let currentCategory = 'all';
+
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      const pills = document.querySelectorAll('#categoryPills button');
+      pills.forEach(p => {
+        p.className = 'btn btn-sm btn-outline-secondary rounded-pill px-3';
+      });
+      btn.className = 'btn btn-sm btn-navy rounded-pill px-3 active';
+      loadCourses();
+    }
+
+    function handleFilterChange() {
+      loadCourses();
+    }
+
+    async function loadCourses() {
+      const search = document.getElementById('searchInput').value;
+      const grid = document.getElementById('coursesGrid');
+
+      const courses = await fetchApprovedCourses(currentCategory, search);
+
+      if (!courses || courses.length === 0) {
+        grid.innerHTML = `
+          <div class="col-12 text-center py-5">
+            <div class="card-modern p-5 text-center">
+              <i class="bi bi-search fs-1 text-muted mb-2"></i>
+              <h5 class="fw-bold text-navy-primary">No Courses Found</h5>
+              <p class="text-muted small mb-0">No approved courses match your current search criteria.</p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = courses.map(c => `
+        <div class="col-md-6 col-lg-4">
+          <div class="card-modern h-100 overflow-hidden d-flex flex-column">
+            <div style="height: 180px; background: #e2e8f0; position: relative;">
+              ${c.thumbnail_url 
+                ? `<img src="${c.thumbnail_url}" alt="${c.title}" class="w-100 h-100 object-fit-cover">`
+                : `<div class="w-100 h-100 bg-navy-primary d-flex align-items-center justify-content-center text-teal fs-1"><i class="bi bi-book"></i></div>`}
+              <span class="badge bg-white text-dark shadow-sm position-absolute top-0 start-0 m-3 px-2.5 py-1.5 fw-semibold" style="font-size: 0.75rem;">
+                ${c.category}
+              </span>
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <h5 class="fw-bold text-navy-primary mb-2 line-clamp-1">${c.title}</h5>
+              <p class="text-muted small mb-3 line-clamp-2">${c.description || 'Hands-on capacity building program.'}</p>
+              <div class="mt-auto pt-3 border-top d-flex align-items-center justify-content-between small text-muted">
+                <span><i class="bi bi-person me-1"></i>${c.trainer?.full_name || 'Faculty Member'}</span>
+                <span><i class="bi bi-clock me-1"></i>${c.duration || '4 Weeks'}</span>
+              </div>
+              <a href="course-details.html?id=${c.id}" class="btn btn-sm btn-navy mt-3 w-100 py-2 rounded-3">
+                View Curriculum & Enroll
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCourses);
+  </script>
+</body>
+</html>
+

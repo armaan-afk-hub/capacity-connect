@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard – CAPACITY CONNECT</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <div class="d-flex min-vh-100">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar d-flex flex-column p-3 d-none d-lg-flex" style="width: 260px;">
+      <a href="index.html" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-4 px-2">
+        <div class="brand-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        <span class="fs-5 fw-bold text-white">CAPACITY <span class="text-teal">CONNECT</span></span>
+      </a>
+
+      <div class="p-3 bg-white bg-opacity-10 rounded-3 mb-4 text-white">
+        <div class="small fw-semibold text-truncate" id="sidebarUserName">Student</div>
+        <div class="badge bg-teal-light text-dark fw-bold text-uppercase mt-1" style="font-size: 0.65rem;">Trainee</div>
+      </div>
+
+      <nav class="nav flex-column gap-1 flex-grow-1">
+        <a href="#overview" class="sidebar-link active" onclick="switchTab('overview', this)">
+          <i class="bi bi-grid-fill"></i> Overview
+        </a>
+        <a href="#my-courses" class="sidebar-link" onclick="switchTab('my-courses', this)">
+          <i class="bi bi-journal-check"></i> My Courses
+        </a>
+        <a href="#materials" class="sidebar-link" onclick="switchTab('materials', this)">
+          <i class="bi bi-file-earmark-pdf"></i> Materials (PDF)
+        </a>
+        <a href="#quizzes" class="sidebar-link" onclick="switchTab('quizzes', this)">
+          <i class="bi bi-patch-question"></i> Quizzes
+        </a>
+        <a href="#results" class="sidebar-link" onclick="switchTab('results', this)">
+          <i class="bi bi-award"></i> Quiz Results
+        </a>
+        <a href="#announcements" class="sidebar-link" onclick="switchTab('announcements', this)">
+          <i class="bi bi-megaphone"></i> Announcements
+        </a>
+        <a href="courses.html" class="sidebar-link">
+          <i class="bi bi-compass"></i> Explore Catalog
+        </a>
+        <a href="profile.html" class="sidebar-link">
+          <i class="bi bi-person-gear"></i> Profile Settings
+        </a>
+      </nav>
+
+      <div class="pt-3 border-top border-secondary border-opacity-25">
+        <button onclick="logoutUser()" class="btn btn-sm btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2 rounded-3">
+          <i class="bi bi-box-arrow-right"></i> Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Offcanvas Sidebar -->
+    <div class="offcanvas offcanvas-start bg-navy-dark text-white" tabindex="-1" id="mobileSidebar">
+      <div class="offcanvas-header border-bottom border-secondary border-opacity-25">
+        <h5 class="offcanvas-title text-white fw-bold">CAPACITY CONNECT</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body d-flex flex-column p-3">
+        <nav class="nav flex-column gap-1 flex-grow-1">
+          <a href="#overview" class="sidebar-link active" data-bs-dismiss="offcanvas" onclick="switchTab('overview')">
+            <i class="bi bi-grid-fill"></i> Overview
+          </a>
+          <a href="#my-courses" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchTab('my-courses')">
+            <i class="bi bi-journal-check"></i> My Courses
+          </a>
+          <a href="#materials" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchTab('materials')">
+            <i class="bi bi-file-earmark-pdf"></i> Materials (PDF)
+          </a>
+          <a href="#quizzes" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchTab('quizzes')">
+            <i class="bi bi-patch-question"></i> Quizzes
+          </a>
+          <a href="#results" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchTab('results')">
+            <i class="bi bi-award"></i> Quiz Results
+          </a>
+          <a href="#announcements" class="sidebar-link" data-bs-dismiss="offcanvas" onclick="switchTab('announcements')">
+            <i class="bi bi-megaphone"></i> Announcements
+          </a>
+          <a href="courses.html" class="sidebar-link">
+            <i class="bi bi-compass"></i> Explore Catalog
+          </a>
+          <a href="profile.html" class="sidebar-link">
+            <i class="bi bi-person-gear"></i> Profile Settings
+          </a>
+        </nav>
+        <button onclick="logoutUser()" class="btn btn-sm btn-outline-danger w-100 mt-auto rounded-3">
+          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-grow-1 d-flex flex-column">
+      <!-- Top Navbar -->
+      <header class="bg-white border-bottom p-3 px-4 d-flex justify-content-between align-items-center sticky-top">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+            <i class="bi bi-list"></i>
+          </button>
+          <h5 class="fw-bold text-navy-primary mb-0" id="pageHeading">Student Learning Portal</h5>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <a href="courses.html" class="btn btn-sm btn-outline-secondary rounded-3 d-none d-sm-inline-flex align-items-center gap-1">
+            <i class="bi bi-compass"></i> Course Catalog
+          </a>
+          <a href="profile.html" class="btn btn-sm btn-light border rounded-circle p-2" title="Profile">
+            <i class="bi bi-person"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Dashboard Body -->
+      <main class="p-4 p-lg-5 flex-grow-1">
+        <!-- TAB 1: OVERVIEW -->
+        <div id="tab-overview" class="dashboard-tab">
+          <!-- Welcome Banner -->
+          <div class="card-modern p-4 p-lg-5 bg-navy-primary text-white border-0 shadow-sm mb-4">
+            <span class="badge bg-teal-light text-dark fw-bold mb-2">Student Learning Space</span>
+            <h3 class="fw-bold text-white mb-2" id="welcomeText">Welcome, Trainee!</h3>
+            <p class="text-light opacity-75 small mb-0 max-w-xl">
+              Track your enrolled courses, download PDF study notes, complete timed assessments, and view your evaluation grades.
+            </p>
+          </div>
+
+          <!-- 4 Stats Cards -->
+          <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Enrolled Courses</span>
+                  <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-journal-bookmark-fill"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardEnrolled">0</h3>
+                <span class="text-muted small">Registered curricula</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Completed</span>
+                  <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardCompleted">0</h3>
+                <span class="text-muted small">Courses finished</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">In Progress</span>
+                  <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-clock-history"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardInProgress">0</h3>
+                <span class="text-muted small">Active training</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-uppercase fw-bold text-muted small" style="font-size: 0.72rem;">Quizzes Attempted</span>
+                  <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-award-fill"></i></div>
+                </div>
+                <h3 class="fw-bold text-navy-primary mb-0" id="cardQuizzes">0</h3>
+                <span class="text-muted small">Evaluations passed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Enrolled Courses Preview -->
+          <div class="card-modern p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-navy-primary mb-0">Enrolled Courses</h5>
+              <button class="btn btn-sm btn-outline-secondary rounded-3" onclick="switchTab('my-courses')">View All</button>
+            </div>
+            <div class="row g-3" id="overviewCoursesGrid">
+              <div class="text-muted small py-3">Loading your courses...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: MY COURSES -->
+        <div id="tab-my-courses" class="dashboard-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">My Enrolled Curricula</h5>
+            <div class="row g-4" id="myCoursesList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: MATERIALS -->
+        <div id="tab-materials" class="dashboard-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Enrolled Course PDF Materials</h5>
+            <div class="table-responsive">
+              <table class="table align-middle table-hover small">
+                <thead class="table-light">
+                  <tr>
+                    <th>Document Title</th>
+                    <th>Course</th>
+                    <th>Date Uploaded</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="materialsTableBody">
+                  <tr><td colspan="4" class="text-center py-4 text-muted">Loading study notes...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: QUIZZES -->
+        <div id="tab-quizzes" class="dashboard-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Knowledge Assessment Quizzes</h5>
+            <div class="row g-4" id="quizzesCardsContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: RESULTS -->
+        <div id="tab-results" class="dashboard-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Quiz Results & Grade History</h5>
+            <div class="table-responsive">
+              <table class="table align-middle table-hover small">
+                <thead class="table-light">
+                  <tr>
+                    <th>Assessment Title</th>
+                    <th>Course</th>
+                    <th>Score Obtained</th>
+                    <th>Total</th>
+                    <th>Percentage</th>
+                    <th>Attempt Date</th>
+                  </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                  <tr><td colspan="6" class="text-center py-4 text-muted">No quiz records yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: ANNOUNCEMENTS -->
+        <div id="tab-announcements" class="dashboard-tab d-none">
+          <div class="card-modern p-4">
+            <h5 class="fw-bold text-navy-primary mb-3">Official Announcements</h5>
+            <div class="d-flex flex-column gap-3" id="announcementsList">
+              <p class="text-muted small">Loading bulletins...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Quiz Attempt Modal -->
+  <div class="modal fade" id="quizModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header bg-navy-primary text-white border-0">
+          <div>
+            <h5 class="modal-title fw-bold text-white mb-0" id="modalQuizTitle">Assessment</h5>
+            <span class="small text-light opacity-75" id="modalQuizCourse">Course</span>
+          </div>
+          <div class="badge bg-warning text-dark fs-6 font-monospace" id="quizTimer">15:00</div>
+        </div>
+        <div class="modal-body p-4">
+          <div id="quizQuestionsContainer" class="d-flex flex-column gap-4">
+            <!-- Questions rendered via JS -->
+          </div>
+        </div>
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel Attempt</button>
+          <button type="button" id="submitQuizBtn" onclick="handleQuizSubmit()" class="btn btn-sm btn-navy px-4 py-2 rounded-3 fw-bold">
+            Submit Examination
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/student.js"></script>
+
+  <script>
+    let activeUser = null;
+    let activeQuiz = null;
+    let quizTimerInterval = null;
+    let currentQuizAnswers = {};
+
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.add('d-none'));
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) target.classList.remove('d-none');
+
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const titles = {
+        'overview': 'Student Learning Overview',
+        'my-courses': 'My Enrolled Curricula',
+        'materials': 'Digital Course Materials & Notes',
+        'quizzes': 'Multiple Choice Quizzes',
+        'results': 'Evaluation Results History',
+        'announcements': 'Institutional Bulletins'
+      };
+      document.getElementById('pageHeading').textContent = titles[tabId] || 'Student Dashboard';
+    }
+
+    async function initStudentDashboard() {
+      // Authenticate and protect student role
+      const authData = await checkAuthGuard(['student', 'admin']);
+      if (!authData) return;
+
+      activeUser = authData.session.user;
+      const profile = authData.profile;
+
+      document.getElementById('sidebarUserName').textContent = profile?.full_name || 'Trainee';
+      document.getElementById('welcomeText').textContent = `Welcome, ${profile?.full_name || 'Trainee'}!`;
+
+      // Load Data
+      const [enrollments, materials, quizzes, results, announcements] = await Promise.all([
+        getStudentEnrollments(activeUser.id),
+        getStudentMaterials(activeUser.id),
+        getStudentQuizzes(activeUser.id),
+        getStudentResults(activeUser.id),
+        getAnnouncements()
+      ]);
+
+      // Metrics
+      document.getElementById('cardEnrolled').textContent = enrollments.length;
+      document.getElementById('cardCompleted').textContent = enrollments.filter(e => e.status === 'completed').length;
+      document.getElementById('cardInProgress').textContent = enrollments.filter(e => e.status === 'enrolled').length;
+      document.getElementById('cardQuizzes').textContent = results.length;
+
+      // Overview grid
+      const overviewGrid = document.getElementById('overviewCoursesGrid');
+      if (enrollments.length === 0) {
+        overviewGrid.innerHTML = `
+          <div class="col-12 text-center py-4">
+            <p class="text-muted small mb-2">You have not enrolled in any capacity building programs yet.</p>
+            <a href="courses.html" class="btn btn-sm btn-teal px-3 rounded-3">Browse Available Courses</a>
+          </div>
+        `;
+      } else {
+        overviewGrid.innerHTML = enrollments.slice(0, 3).map(e => `
+          <div class="col-md-4">
+            <div class="card-modern p-3 h-100 bg-light border">
+              <span class="badge bg-teal-light text-dark mb-2">${e.course?.category || 'General'}</span>
+              <h6 class="fw-bold text-navy-primary mb-1 line-clamp-1">${e.course?.title}</h6>
+              <span class="text-muted small d-block mb-3"><i class="bi bi-clock me-1"></i>${e.course?.duration}</span>
+              <span class="badge ${e.status === 'completed' ? 'bg-success' : 'bg-warning text-dark'} text-uppercase" style="font-size: 0.68rem;">
+                ${e.status}
+              </span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // My Courses tab
+      const myCoursesList = document.getElementById('myCoursesList');
+      if (enrollments.length > 0) {
+        myCoursesList.innerHTML = enrollments.map(e => `
+          <div class="col-md-6 col-xl-4">
+            <div class="card-modern h-100 p-4 d-flex flex-column">
+              <span class="badge bg-teal-light text-dark mb-2 align-self-start">${e.course?.category}</span>
+              <h5 class="fw-bold text-navy-primary mb-2">${e.course?.title}</h5>
+              <p class="text-muted small mb-3 flex-grow-1">${e.course?.description || 'Hands-on curriculum.'}</p>
+              <div class="pt-3 border-top d-flex justify-content-between align-items-center small text-muted">
+                <span>Trainer: ${e.course?.trainer?.full_name || 'Faculty'}</span>
+                <span class="badge ${e.status === 'completed' ? 'bg-success' : 'bg-primary'}">${e.status}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        myCoursesList.innerHTML = `<div class="col-12 text-center text-muted py-4">No enrolled courses.</div>`;
+      }
+
+      // Materials tab
+      const matBody = document.getElementById('materialsTableBody');
+      if (materials.length > 0) {
+        matBody.innerHTML = materials.map(m => `
+          <tr>
+            <td class="fw-semibold text-navy-primary"><i class="bi bi-file-earmark-pdf text-danger me-2"></i>${m.title}</td>
+            <td>${m.course?.title}</td>
+            <td class="text-muted">${new Date(m.uploaded_at).toLocaleDateString()}</td>
+            <td class="text-end">
+              <a href="${m.file_url}" target="_blank" class="btn btn-sm btn-navy px-3 rounded-3">Download PDF</a>
+            </td>
+          </tr>
+        `).join('');
+      } else {
+        matBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">No materials available for your courses yet.</td></tr>`;
+      }
+
+      // Quizzes tab
+      const quizzesContainer = document.getElementById('quizzesCardsContainer');
+      if (quizzes.length > 0) {
+        quizzesContainer.innerHTML = quizzes.map(q => `
+          <div class="col-md-6 col-xl-4">
+            <div class="card-modern p-4 h-100 d-flex flex-column">
+              <span class="badge bg-teal-light text-dark mb-2 align-self-start">${q.course?.category || 'Quiz'}</span>
+              <h5 class="fw-bold text-navy-primary mb-1">${q.title}</h5>
+              <p class="small text-muted mb-3">Course: ${q.course?.title}</p>
+              <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                <span class="small text-muted"><i class="bi bi-clock me-1"></i>${q.duration_minutes || 15} mins</span>
+                <button onclick="startQuizAttempt('${q.id}')" class="btn btn-sm btn-teal px-3 rounded-3">Start Quiz</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        quizzesContainer.innerHTML = `<div class="col-12 text-center text-muted py-4">No active quizzes found for your enrolled courses.</div>`;
+      }
+
+      // Results tab
+      const resBody = document.getElementById('resultsTableBody');
+      if (results.length > 0) {
+        resBody.innerHTML = results.map(r => {
+          const pct = Math.round((r.score / r.total_marks) * 100);
+          return `
+            <tr>
+              <td class="fw-semibold text-navy-primary">${r.quiz?.title}</td>
+              <td>${r.quiz?.course?.title || 'Course'}</td>
+              <td class="fw-bold font-monospace">${r.score}</td>
+              <td class="text-muted font-monospace">${r.total_marks}</td>
+              <td>
+                <span class="badge ${pct >= 50 ? 'bg-success' : 'bg-danger'} font-monospace">${pct}%</span>
+              </td>
+              <td class="text-muted">${new Date(r.attempted_at).toLocaleDateString()}</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        resBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No assessment results recorded yet.</td></tr>`;
+      }
+
+      // Announcements tab
+      const annList = document.getElementById('announcementsList');
+      if (announcements.length > 0) {
+        annList.innerHTML = announcements.map(a => `
+          <div class="p-3 bg-light rounded-3 border">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h6 class="fw-bold text-navy-primary mb-0"><i class="bi bi-megaphone text-teal me-2"></i>${a.title}</h6>
+              <span class="small text-muted">${new Date(a.created_at).toLocaleDateString()}</span>
+            </div>
+            <p class="small text-muted mb-0 leading-relaxed ps-4">${a.message}</p>
+          </div>
+        `).join('');
+      } else {
+        annList.innerHTML = `<p class="text-muted small">No announcements posted at this time.</p>`;
+      }
+    }
+
+    async function startQuizAttempt(quizId) {
+      activeQuiz = await getQuizWithQuestions(quizId);
+      if (!activeQuiz || !activeQuiz.questions || activeQuiz.questions.length === 0) {
+        showToast('This quiz has no questions configured yet.', 'warning');
+        return;
+      }
+
+      currentQuizAnswers = {};
+      document.getElementById('modalQuizTitle').textContent = activeQuiz.title;
+      document.getElementById('modalQuizCourse').textContent = activeQuiz.course?.title || 'Assessment';
+
+      // Render Questions
+      const container = document.getElementById('quizQuestionsContainer');
+      container.innerHTML = activeQuiz.questions.map((q, idx) => `
+        <div class="p-3 bg-light rounded-3 border">
+          <div class="fw-bold small text-navy-primary mb-2">Q${idx + 1}. ${q.question_text}</div>
+          <div class="d-flex flex-column gap-2 small">
+            <label class="d-flex align-items-center gap-2 p-2 rounded border bg-white cursor-pointer">
+              <input type="radio" name="q_${q.id}" value="A" onchange="recordAnswer('${q.id}', 'A')">
+              <span>(A) ${q.option_a}</span>
+            </label>
+            <label class="d-flex align-items-center gap-2 p-2 rounded border bg-white cursor-pointer">
+              <input type="radio" name="q_${q.id}" value="B" onchange="recordAnswer('${q.id}', 'B')">
+              <span>(B) ${q.option_b}</span>
+            </label>
+            <label class="d-flex align-items-center gap-2 p-2 rounded border bg-white cursor-pointer">
+              <input type="radio" name="q_${q.id}" value="C" onchange="recordAnswer('${q.id}', 'C')">
+              <span>(C) ${q.option_c}</span>
+            </label>
+            <label class="d-flex align-items-center gap-2 p-2 rounded border bg-white cursor-pointer">
+              <input type="radio" name="q_${q.id}" value="D" onchange="recordAnswer('${q.id}', 'D')">
+              <span>(D) ${q.option_d}</span>
+            </label>
+          </div>
+        </div>
+      `).join('');
+
+      // Setup Timer
+      let totalSeconds = (activeQuiz.duration_minutes || 15) * 60;
+      clearInterval(quizTimerInterval);
+      updateTimerDisplay(totalSeconds);
+
+      quizTimerInterval = setInterval(() => {
+        totalSeconds--;
+        if (totalSeconds <= 0) {
+          clearInterval(quizTimerInterval);
+          handleQuizSubmit();
+        } else {
+          updateTimerDisplay(totalSeconds);
+        }
+      }, 1000);
+
+      const modal = new bootstrap.Modal(document.getElementById('quizModal'));
+      modal.show();
+    }
+
+    function recordAnswer(qId, val) {
+      currentQuizAnswers[qId] = val;
+    }
+
+    function updateTimerDisplay(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      document.getElementById('quizTimer').textContent = `${m}:${s}`;
+    }
+
+    async function handleQuizSubmit() {
+      clearInterval(quizTimerInterval);
+      const submitBtn = document.getElementById('submitQuizBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Grading...';
+
+      try {
+        const { score, totalMarks } = await submitQuiz(activeUser.id, activeQuiz.id, currentQuizAnswers);
+        const modalEl = document.getElementById('quizModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+
+        const pct = Math.round((score / totalMarks) * 100);
+        showToast(`Quiz Submitted! You scored ${score}/${totalMarks} (${pct}%).`, pct >= 50 ? 'success' : 'warning');
+        setTimeout(() => window.location.reload(), 1500);
+      } catch (err) {
+        showToast(err.message || 'Error submitting answers.', 'danger');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Examination';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initStudentDashboard);
+  </script>
+</body>
+</html>
+
