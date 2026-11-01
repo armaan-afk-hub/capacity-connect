@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPACITY CONNECT – Digital Capacity Building & Learning Portal</title>
+  
+  <!-- External CDN Libraries (Bootstrap 5, Icons, Supabase) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- =========================================================================
+       COMPLETE INLINE STYLESHEET (CSS3)
+       ========================================================================= -->
+  <style>
+    :root {
+      --navy-primary: #0f2942;
+      --navy-dark: #0a1b2d;
+      --navy-light: #183d61;
+      --teal-accent: #0d9488;
+      --teal-hover: #0f766e;
+      --teal-light: #ccfbf1;
+      --bg-soft: #f8fafc;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --card-border: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-soft);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar Branding */
+    .navbar-brand {
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--navy-primary) !important;
+    }
+    .brand-icon {
+      background: var(--navy-primary);
+      color: #2dd4bf;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    /* Buttons */
+    .btn-navy {
+      background-color: var(--navy-primary);
+      color: #ffffff;
+      border: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn-navy:hover {
+      background-color: var(--navy-light);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(15, 41, 66, 0.15);
+    }
+    .btn-teal {
+      background-color: var(--teal-accent);
+      color: #ffffff;
+      border: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn-teal:hover {
+      background-color: var(--teal-hover);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-dark) 100%);
+      color: #ffffff;
+      padding: 4.5rem 0 5.5rem;
+    }
+    .hero-heading {
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    /* Modern Cards */
+    .card-modern {
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: #ffffff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-modern:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+    .stat-card {
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    /* Tab & Nav Pills */
+    .nav-pills .nav-link.active {
+      background-color: var(--navy-primary);
+      color: #ffffff;
+    }
+    .nav-pills .nav-link {
+      color: var(--text-main);
+      font-weight: 600;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       NAVIGATION BAR
+       ========================================================================= -->
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#" onclick="showSection('home')">
+        <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+        <div>
+          <span class="fs-5 fw-bold" style="color: var(--navy-primary);">CAPACITY</span>
+          <span class="fs-5 fw-bold" style="color: var(--teal-accent);">CONNECT</span>
+          <div class="text-muted text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px; margin-top: -3px;">
+            SIH26075 Lab Portal
+          </div>
+        </div>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2">
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#" onclick="showSection('home')">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#" onclick="showSection('courses')">Courses</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#" onclick="showSection('dashboard')">Student Portal</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#" onclick="showSection('quiz')">Timed Assessment</a></li>
+        </ul>
+
+        <div id="authNavButtons" class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm btn-outline-secondary px-3 py-1.5 rounded-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+          </button>
+          <button class="btn btn-sm btn-navy px-3 py-1.5 rounded-3" data-bs-toggle="modal" data-bs-target="#registerModal">
+            Register
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       SECTION 1: LANDING PAGE & HERO
+       ========================================================================= -->
+  <main id="section-home">
+    <header class="hero-section text-center text-lg-start">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-10 text-white mb-3" style="font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.2);">
+              <i class="bi bi-award text-warning"></i>
+              <span>Smart India Hackathon (SIH26075) | IWP Lab Project</span>
+            </div>
+            <h1 class="hero-heading text-white mb-3">
+              Digital Capacity Building & <br class="d-none d-lg-block">
+              <span style="color: #2dd4bf;">Learning Management Portal</span>
+            </h1>
+            <p class="lead text-light opacity-75 mb-4">
+              A responsive, role-based platform designed for trainees, educators, and administrators to discover courses, access materials, and undertake automated assessments.
+            </p>
+            <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+              <button class="btn btn-teal px-4 py-2.5 rounded-3" onclick="showSection('courses')">
+                <i class="bi bi-journal-code me-2"></i> Browse Courses
+              </button>
+              <button class="btn btn-outline-light px-4 py-2.5 rounded-3" onclick="showSection('quiz')">
+                <i class="bi bi-stopwatch me-2"></i> Take Demo Quiz
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="p-4 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 text-white shadow-lg">
+              <h5 class="fw-bold mb-3"><i class="bi bi-check-circle-fill text-teal me-2"></i>Core Architecture</h5>
+              <ul class="list-unstyled mb-0 d-flex flex-column gap-2 small">
+                <li><i class="bi bi-layers text-teal me-2"></i> Frontend: HTML5, CSS3, Vanilla JavaScript (ES6+)</li>
+                <li><i class="bi bi-bootstrap text-teal me-2"></i> Framework: Bootstrap 5.3 & Bootstrap Icons</li>
+                <li><i class="bi bi-database text-teal me-2"></i> Backend: Supabase PostgreSQL with Row Level Security</li>
+                <li><i class="bi bi-shield-lock text-teal me-2"></i> Auth: Role-Based Access Control (RBAC)</li>
+                <li><i class="bi bi-cloud-check text-teal me-2"></i> Cloud Hosting: Vercel Serverless Edge Platform</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Real-time Stats -->
+    <div class="container py-4" style="margin-top: -2.5rem; position: relative; z-index: 5;">
+      <div class="row g-3">
+        <div class="col-6 col-md-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-book"></i></div>
+            <div><h3 class="fw-bold mb-0">6+</h3><span class="text-muted small">Specialized Courses</span></div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-people"></i></div>
+            <div><h3 class="fw-bold mb-0">120+</h3><span class="text-muted small">Active Trainees</span></div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-person-video3"></i></div>
+            <div><h3 class="fw-bold mb-0">15+</h3><span class="text-muted small">Faculty Trainers</span></div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card d-flex align-items-center gap-3">
+            <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-patch-check"></i></div>
+            <div><h3 class="fw-bold mb-0">100%</h3><span class="text-muted small">Evaluation Ready</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       SECTION 2: COURSE CATALOG & LIVE SEARCH
+       ========================================================================= -->
+  <section id="section-courses" class="container py-5 d-none">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h3 class="fw-bold text-navy-primary mb-1">Accredited Course Catalog</h3>
+        <p class="text-muted small mb-0">Explore skill modules across Computer Science and Information Technology</p>
+      </div>
+      <div class="d-flex gap-2">
+        <input type="text" id="courseSearchInput" class="form-control rounded-3" placeholder="Search courses..." onkeyup="filterCourses()">
+        <select id="courseCategorySelect" class="form-select rounded-3" onchange="filterCourses()">
+          <option value="all">All Disciplines</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Cloud Computing">Cloud Computing</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row g-4" id="coursesListContainer">
+      <!-- Courses rendered dynamically via JavaScript -->
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 3: STUDENT DASHBOARD
+       ========================================================================= -->
+  <section id="section-dashboard" class="container py-5 d-none">
+    <div class="card-modern p-4 p-md-5">
+      <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <div>
+          <h4 class="fw-bold text-navy-primary mb-1"><i class="bi bi-mortarboard me-2 text-teal"></i>Student Learning Portal</h4>
+          <p class="text-muted small mb-0">Manage enrolled courses, access lecture materials, and check test records</p>
+        </div>
+        <span class="badge bg-success px-3 py-2 rounded-pill"><i class="bi bi-shield-check me-1"></i> Active Session</span>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <h5 class="fw-bold mb-3 text-navy-primary">My Enrolled Courses</h5>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle border">
+              <thead class="table-light">
+                <tr>
+                  <th>Course Title</th>
+                  <th>Category</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="enrolledCoursesTableBody">
+                <tr>
+                  <td class="fw-semibold">Full Stack Web Development (MERN)</td>
+                  <td>Web Development</td>
+                  <td>6 Weeks</td>
+                  <td><span class="badge bg-primary">In Progress</span></td>
+                  <td><button class="btn btn-sm btn-outline-primary" onclick="showSection('quiz')">Attempt Quiz</button></td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Cloud Architecture on AWS & Azure</td>
+                  <td>Cloud Computing</td>
+                  <td>4 Weeks</td>
+                  <td><span class="badge bg-success">Enrolled</span></td>
+                  <td><button class="btn btn-sm btn-outline-primary" onclick="showSection('quiz')">Attempt Quiz</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card-modern p-4 bg-light border-0">
+            <h6 class="fw-bold text-navy-primary mb-3"><i class="bi bi-file-earmark-pdf text-danger me-2"></i>Curriculum Notes (PDFs)</h6>
+            <ul class="list-group list-group-flush small">
+              <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                <span>Unit 1: HTML5 & CSS3 Essentials</span>
+                <span class="badge bg-teal-accent text-white">PDF</span>
+              </li>
+              <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                <span>Unit 2: Client-side JS & DOM APIs</span>
+                <span class="badge bg-teal-accent text-white">PDF</span>
+              </li>
+              <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                <span>Unit 3: PostgreSQL & Supabase Integration</span>
+                <span class="badge bg-teal-accent text-white">PDF</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 4: TIMED MCQ QUIZ ENGINE
+       ========================================================================= -->
+  <section id="section-quiz" class="container py-5 d-none">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card-modern p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+            <div>
+              <h4 class="fw-bold text-navy-primary mb-1">Web Development Knowledge Assessment</h4>
+              <span class="text-muted small">Answer all questions before the timer reaches zero</span>
+            </div>
+            <div class="badge bg-danger fs-6 px-3 py-2 rounded-pill d-flex align-items-center gap-1">
+              <i class="bi bi-alarm"></i>
+              <span id="quizTimerDisplay">03:00</span>
+            </div>
+          </div>
+
+          <form id="quizForm" onsubmit="handleQuizSubmit(event)">
+            <!-- Question 1 -->
+            <div class="mb-4 p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-navy-primary mb-3">1. Which protocol provides encrypted transmission between browser and web server?</h6>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q1" id="q1a" value="A">
+                <label class="form-check-label" for="q1a">A) HTTP</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q1" id="q1b" value="B">
+                <label class="form-check-label" for="q1b">B) HTTPS</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q1" id="q1c" value="C">
+                <label class="form-check-label" for="q1c">C) FTP</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="q1" id="q1d" value="D">
+                <label class="form-check-label" for="q1d">D) Telnet</label>
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="mb-4 p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-navy-primary mb-3">2. In PostgreSQL and Supabase, what mechanism provides granular per-user row protection?</h6>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q2" id="q2a" value="A">
+                <label class="form-check-label" for="q2a">A) Cross-Origin Resource Sharing (CORS)</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q2" id="q2b" value="B">
+                <label class="form-check-label" for="q2b">B) Row Level Security (RLS)</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q2" id="q2c" value="C">
+                <label class="form-check-label" for="q2c">C) Foreign Key Cascades</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="q2" id="q2d" value="D">
+                <label class="form-check-label" for="q2d">D) Indexed Views</label>
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="mb-4 p-3 bg-light rounded-3">
+              <h6 class="fw-bold text-navy-primary mb-3">3. What is the standard HTTP response status code for unauthorized access?</h6>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q3" id="q3a" value="A">
+                <label class="form-check-label" for="q3a">A) 200 OK</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q3" id="q3b" value="B">
+                <label class="form-check-label" for="q3b">B) 301 Moved Permanently</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="q3" id="q3c" value="C">
+                <label class="form-check-label" for="q3c">C) 401 Unauthorized</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="q3" id="q3d" value="D">
+                <label class="form-check-label" for="q3d">D) 500 Internal Server Error</label>
+              </div>
+            </div>
+
+            <div id="quizResultBox" class="alert d-none text-center"></div>
+
+            <button type="submit" id="submitQuizBtn" class="btn btn-teal w-100 py-2.5 rounded-3 fw-bold">
+              Submit Assessment Answers
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MODALS: AUTHENTICATION & REGISTRATION
+       ========================================================================= -->
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 p-3">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-navy-primary">Sign In</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="handleAuthLogin(event)">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Email</label>
+              <input type="email" id="modalLoginEmail" class="form-control" placeholder="user@college.edu" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Password</label>
+              <input type="password" id="modalLoginPassword" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-navy w-100 py-2 rounded-3">Sign In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 p-3">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-navy-primary">Create Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="handleAuthRegister(event)">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Role</label>
+              <select id="modalRegRole" class="form-select">
+                <option value="student">Student / Trainee</option>
+                <option value="trainer">Faculty / Trainer</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Full Name</label>
+              <input type="text" id="modalRegName" class="form-control" placeholder="e.g. Syed Armaan" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Email</label>
+              <input type="email" id="modalRegEmail" class="form-control" placeholder="user@college.edu" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted text-uppercase">Password</label>
+              <input type="password" id="modalRegPass" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-teal w-100 py-2 rounded-3">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-4 bg-white border-top mt-auto text-center small text-muted">
+    <div class="container">
+      &copy; CAPACITY CONNECT | Internet & Web Programming Lab Mini-Project (SIH26075)
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       COMPLETE INLINE JAVASCRIPT LOGIC (ES6+)
+       ========================================================================= -->
+  <script>
+    // 1. Supabase Initialization
+    const SUPABASE_URL = 'https://aqqefwjuprvsthoeuxes.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_AEhXFpaxIBJV4OIftirfgA_rxkbpzAB';
+    let supabaseClient = null;
+
+    if (typeof supabase !== 'undefined') {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    // 2. Mock Datasets for Standalone Offline Execution
+    const coursesData = [
+      { id: '1', title: 'Full Stack Web Development with Node.js & React', category: 'Web Development', duration: '6 Weeks', trainer: 'Prof. R. Sharma' },
+      { id: '2', title: 'Cloud Infrastructure & DevOps Deployment', category: 'Cloud Computing', duration: '4 Weeks', trainer: 'Dr. V. Rao' },
+      { id: '3', title: 'Data Analytics and Visualization with Python', category: 'Data Science', duration: '5 Weeks', trainer: 'Prof. A. Kumar' },
+      { id: '4', title: 'Modern Cybersecurity Fundamentals & Defensive Ops', category: 'Cybersecurity', duration: '4 Weeks', trainer: 'Dr. S. Nair' }
+    ];
+
+    // 3. Navigation Switcher
+    function showSection(sectionName) {
+      const sections = ['home', 'courses', 'dashboard', 'quiz'];
+      sections.forEach(s => {
+        const el = document.getElementById('section-' + s);
+        if (el) el.classList.add('d-none');
+      });
+      const activeEl = document.getElementById('section-' + sectionName);
+      if (activeEl) activeEl.classList.remove('d-none');
+      if (sectionName === 'courses') renderCourses(coursesData);
+      if (sectionName === 'quiz') startQuizTimer();
+    }
+
+    // 4. Render Courses Dynamically
+    function renderCourses(courses) {
+      const container = document.getElementById('coursesListContainer');
+      if (!container) return;
+      container.innerHTML = courses.map(c => `
+        <div class="col-md-6 col-lg-3">
+          <div class="card-modern h-100 p-4 d-flex flex-column">
+            <span class="badge bg-light text-dark align-self-start mb-2 px-2.5 py-1 border">${c.category}</span>
+            <h5 class="fw-bold text-navy-primary mb-2">${c.title}</h5>
+            <div class="text-muted small mb-3"><i class="bi bi-person me-1"></i>${c.trainer}</div>
+            <div class="mt-auto d-flex justify-content-between align-items-center pt-3 border-top">
+              <span class="small text-muted"><i class="bi bi-clock me-1"></i>${c.duration}</span>
+              <button class="btn btn-sm btn-navy rounded-3 px-3" onclick="enrollCourse('${c.title}')">Enroll</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCourses() {
+      const query = document.getElementById('courseSearchInput').value.toLowerCase();
+      const cat = document.getElementById('courseCategorySelect').value;
+      const filtered = coursesData.filter(c => {
+        const matchesQuery = c.title.toLowerCase().includes(query);
+        const matchesCat = (cat === 'all') || (c.category === cat);
+        return matchesQuery && matchesCat;
+      });
+      renderCourses(filtered);
+    }
+
+    function enrollCourse(courseTitle) {
+      alert('Successfully enrolled in: ' + courseTitle + '! Added to your Student Portal.');
+      showSection('dashboard');
+    }
+
+    // 5. Timed MCQ Assessment Engine
+    let timerInterval = null;
+    let secondsLeft = 180;
+
+    function startQuizTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      secondsLeft = 180;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        updateTimerDisplay();
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          alert('Time expired! Submitting assessment automatically.');
+          evaluateQuiz();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(secondsLeft / 60);
+      const secs = secondsLeft % 60;
+      const display = document.getElementById('quizTimerDisplay');
+      if (display) {
+        display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+    }
+
+    function handleQuizSubmit(e) {
+      e.preventDefault();
+      clearInterval(timerInterval);
+      evaluateQuiz();
+    }
+
+    function evaluateQuiz() {
+      const answers = { q1: 'B', q2: 'B', q3: 'C' };
+      let score = 0;
+      for (let i = 1; i <= 3; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && selected.value === answers[`q${i}`]) {
+          score++;
+        }
+      }
+      const resultBox = document.getElementById('quizResultBox');
+      resultBox.className = 'alert alert-success mt-3';
+      resultBox.innerHTML = `<strong>Assessment Completed!</strong> Your Score: ${score} / 3 (${Math.round((score/3)*100)}%) – Evaluation stored.`;
+      resultBox.classList.remove('d-none');
+      document.getElementById('submitQuizBtn').disabled = true;
+    }
+
+    // 6. Modal Auth Simulation
+    function handleAuthLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('modalLoginEmail').value;
+      bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+      alert(`Welcome back, ${email}! Signed in successfully.`);
+      showSection('dashboard');
+    }
+
+    function handleAuthRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('modalRegName').value;
+      bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+      alert(`Account created for ${name}! Please sign in.`);
+    }
+
+    // Initialize initial view
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('home');
+    });
+  </script>
+</body>
+</html>
